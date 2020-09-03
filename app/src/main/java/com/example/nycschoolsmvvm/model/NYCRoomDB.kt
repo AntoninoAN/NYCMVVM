@@ -24,6 +24,7 @@ abstract class NYCRoomDB : RoomDatabase() {
                     NYCApplication.nycApplication!!,
                     NYCRoomDB::class.java,
                     "nyc_db")
+                    //.allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
                 return instance

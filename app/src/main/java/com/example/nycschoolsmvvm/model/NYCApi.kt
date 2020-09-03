@@ -23,7 +23,7 @@ interface NYCApi {
             var tempInstance = INSTANCE
             if(tempInstance != null)
                 return tempInstance
-            tempInstance =Retrofit.Builder()
+            tempInstance= Retrofit.Builder()
                 .client(createLoggerClient())
                 .baseUrl("https://data.cityofnewyork.us/")
                 .addConverterFactory(MoshiConverterFactory.create())
