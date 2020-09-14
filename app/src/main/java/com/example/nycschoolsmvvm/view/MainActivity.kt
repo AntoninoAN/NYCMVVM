@@ -1,22 +1,28 @@
-package com.example.nycschoolsmvvm
+package com.example.nycschoolsmvvm.view
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.nycschoolsmvvm.R
 import com.example.nycschoolsmvvm.model.NYCResponse
 import com.example.nycschoolsmvvm.model.NYCSATResponse
 import com.example.nycschoolsmvvm.model.NYCSchoolTable
 import com.example.nycschoolsmvvm.viewmodel.NYCViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var nycViewModel: NYCViewModel
+    lateinit var nycAdapter: NYCAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +46,8 @@ class MainActivity : AppCompatActivity() {
                                 insertSatDB(it.dataSet)
                             is NYCViewModel.ConnectionState.ListSchoolsNetworkResponse->
                                 insertListSchools(it.dataSet)
+                            is NYCViewModel.ConnectionState.ListSatNetworkResponse->
+                                insertSatDB(it.dataSet)
                             is NYCViewModel.ConnectionState.ErrorMessage->
                                 showErrorMessage(it.errorMessage)
                             is NYCViewModel.ConnectionState.AdapterData->
@@ -49,7 +57,10 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
+        storeFavoriteSchool("458")
+        getFavoriteSchool()
         nycViewModel.initNetworkCall()
+        nycViewModel.initNetworkCallSat()
     }
 
     private fun showErrorMessage(errorMessage: String) {
@@ -75,7 +86,44 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateAdapter(dataSet: List<NYCSchoolTable>){
         Log.d("MainActivity", "Size: ${dataSet.size}")
+        recycler_view.layoutManager = LinearLayoutManager(this)
+        recycler_view.adapter = NYCAdapter(dataSet, ::openDetailedFragment)
     }
+
+    private fun openDetailedFragment(nycSchoolTable: @ParameterName(name = "item") NYCSchoolTable) {
+        Log.d("MainActivity", "openDetailedFragment")
+
+        //supportFragmentManager.beginTransaction().replace().commit()
+
+
+
+
+    }
+
+    private fun storeFavoriteSchool(dbn: String){
+        val sharedPreferences: SharedPreferences =
+        getSharedPreferences("FavoriteSchools",
+        Context.MODE_PRIVATE)
+        //sharedPreferences.getString("KEY_DBN_FAVORITE",dbn)
+        val editor: SharedPreferences.Editor=
+            sharedPreferences.edit()
+        editor.putString("KEY_DBN_FAVORITE", dbn)
+        editor.apply()
+//        getSharedPreferences("FavoriteSchools",
+//            Context.MODE_PRIVATE)
+//            .edit()
+//            .putString("KEY_DBN_FAVORITE", dbn)
+//            .apply()
+    }
+
+    private fun getFavoriteSchool(){
+        val value=
+        getSharedPreferences("FavoriteSchools",
+            Context.MODE_PRIVATE)
+            .getString("KEY_DBN_FAVORITE","N/A")
+        Log.d("MainActivity", "$value")
+    }
+
 // GET the list of Schools
 // GET the list of SAT
 // insert into DB

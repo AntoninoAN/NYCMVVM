@@ -13,7 +13,9 @@ data class NYCSchoolTable(
     @ColumnInfo(name="name")
     val school_name: String,
     val total_students: String,
-    val school_sports: String
+    val school_sports: String,
+    val latitude: String,
+    val longitude: String
 )
 @Entity(tableName = "school_sat")
 data class NYCSATTable(

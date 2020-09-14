@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import com.example.nycschoolsmvvm.NYCApplication
 
 @Database(entities = [NYCSchoolTable::class,
-        NYCSATTable::class], version = 1)
+        NYCSATTable::class], version = 2)
 abstract class NYCRoomDB : RoomDatabase() {
 
     abstract fun getNYCDao(): NYCDao

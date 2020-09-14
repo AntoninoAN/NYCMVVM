@@ -4,7 +4,9 @@ data class NYCResponse(
     val dbn: String,
     val school_name: String,
     val total_students: String,
-    val school_sports: String)
+    val school_sports: String,
+    val latitude: String,
+    val longitude: String)
 
 data class NYCSATResponse(
     val dbn: String,
