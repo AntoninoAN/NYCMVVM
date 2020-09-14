@@ -1,11 +1,14 @@
 package com.example.nycschoolsmvvm.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "school_table")
+@Parcelize
 data class NYCSchoolTable(
     @PrimaryKey
     @ColumnInfo(name="id")
@@ -16,7 +19,8 @@ data class NYCSchoolTable(
     val school_sports: String,
     val latitude: String,
     val longitude: String
-)
+): Parcelable
+
 @Entity(tableName = "school_sat")
 data class NYCSATTable(
     @PrimaryKey
